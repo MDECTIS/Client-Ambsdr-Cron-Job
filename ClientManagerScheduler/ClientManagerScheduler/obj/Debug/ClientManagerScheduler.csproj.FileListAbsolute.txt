@@ -3,3 +3,4 @@ I:\Amazon Drive\Source Codes\AccountManagerAssignment\ClientManagerScheduler\Cli
 I:\Amazon Drive\Source Codes\AccountManagerAssignment\ClientManagerScheduler\ClientManagerScheduler\bin\Debug\ClientManagerScheduler.pdb
 I:\Amazon Drive\Source Codes\AccountManagerAssignment\ClientManagerScheduler\ClientManagerScheduler\obj\Debug\ClientManagerScheduler.exe
 I:\Amazon Drive\Source Codes\AccountManagerAssignment\ClientManagerScheduler\ClientManagerScheduler\obj\Debug\ClientManagerScheduler.pdb
+I:\Amazon Drive\Source Codes\AccountManagerAssignment\ClientManagerScheduler\ClientManagerScheduler\obj\Debug\ClientManagerScheduler.csprojResolveAssemblyReference.cache

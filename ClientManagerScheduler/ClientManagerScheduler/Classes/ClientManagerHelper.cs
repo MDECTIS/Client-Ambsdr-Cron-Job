@@ -44,10 +44,13 @@ namespace ClientManagerScheduler.Classes
                     string ExistingManager = "";
                     InActivePreviousCA(AccountID, out ExistingManager, EEManagerName);
                     logList.Add(string.Format("{0} : Done In-Active current EEManager : {1} in AccountManagerAssignment table.", DateTime.Now, ExistingManager));
-                    //No. 4 re-assign with new Client Manager & insert new data into ContactInteraction table
-                    AssignNewCA(AccountID, MSCFileID, EEManagerName, EEManagerNameEmail, ref logList);
-                    logList.Add(string.Format("{0} : Done Insert new EEManager : {1} in AccountManagerAssignment table.", DateTime.Now, EEManagerName));
-                    logList.Add(string.Format("{0} : Compete record {1} / {2}", DateTime.Now, Counter, TotalRecord));
+                    if (EEManagerName.ToUpper().Trim() != ExistingManager.ToUpper().Trim())
+                    {
+                        //No. 4 re-assign with new Client Manager & insert new data into ContactInteraction table
+                        AssignNewCA(AccountID, MSCFileID, EEManagerName, EEManagerNameEmail, ref logList);
+                        logList.Add(string.Format("{0} : Done Insert new EEManager : {1} in AccountManagerAssignment table.", DateTime.Now, EEManagerName));
+                        logList.Add(string.Format("{0} : Compete record {1} / {2}", DateTime.Now, Counter, TotalRecord));
+                    }
 
                 }
             }
@@ -343,33 +346,37 @@ namespace ClientManagerScheduler.Classes
 
 
                 }
-                if (AccountManagerAssignmentID != "" && ExistingManager != "")
+
+                if (newEEManager != ExistingManager)
                 {
-                    //Set it to In-Active
-                    using (SqlConnection Connection = SQLHelper.GetConnection())
+                    if (AccountManagerAssignmentID != "" && ExistingManager != "")
                     {
-                        SqlCommand com = new SqlCommand();
-                        SqlDataAdapter ad = new SqlDataAdapter(com);
-                        System.Text.StringBuilder sql = new System.Text.StringBuilder();
-                        sql.AppendLine("UPDATE AccountManagerAssignment SET Active =0 , EndDate=@EndDate");
-                        sql.AppendLine("WHERE AccountManagerAssignmentID = @AccountManagerAssignmentID");
-
-                        com.CommandText = sql.ToString();
-                        com.CommandType = CommandType.Text;
-                        com.Connection = Connection;
-                        com.CommandTimeout = int.MaxValue;
-
-                        com.Parameters.Add(new SqlParameter("@AccountManagerAssignmentID", AccountManagerAssignmentID));
-                        com.Parameters.Add(new SqlParameter("@EndDate", DateTime.Now));
-                        try
+                        //Set it to In-Active
+                        using (SqlConnection Connection = SQLHelper.GetConnection())
                         {
-                            com.ExecuteNonQuery();
-                        }
-                        catch (Exception ex)
-                        {
+                            SqlCommand com = new SqlCommand();
+                            SqlDataAdapter ad = new SqlDataAdapter(com);
+                            System.Text.StringBuilder sql = new System.Text.StringBuilder();
+                            sql.AppendLine("UPDATE AccountManagerAssignment SET Active =0 , EndDate=@EndDate");
+                            sql.AppendLine("WHERE AccountManagerAssignmentID = @AccountManagerAssignmentID");
+
+                            com.CommandText = sql.ToString();
+                            com.CommandType = CommandType.Text;
+                            com.Connection = Connection;
+                            com.CommandTimeout = int.MaxValue;
+
+                            com.Parameters.Add(new SqlParameter("@AccountManagerAssignmentID", AccountManagerAssignmentID));
+                            com.Parameters.Add(new SqlParameter("@EndDate", DateTime.Now));
+                            try
+                            {
+                                com.ExecuteNonQuery();
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
 
                         }
-
                     }
                 }
             }
